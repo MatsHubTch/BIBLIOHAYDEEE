@@ -35,7 +35,6 @@ public class Usuario {
         emprestimosAtivos = 0;
     }
 
-    // Getters: permitem consultar os dados
 
     public String getNome() {
         return nome;
@@ -57,7 +56,6 @@ public class Usuario {
         return emprestimosAtivos;
     }
 
-    // Setters: permitem alterar dados com validação
 
     public void setNome(String novoNome) {
         if (novoNome != null && !novoNome.trim().isEmpty()) {
