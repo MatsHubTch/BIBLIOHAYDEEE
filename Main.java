@@ -24,7 +24,6 @@ public class Main {
 
             System.out.println("\n=== CADASTRO DE USUÁRIO ===");
 
-            // Solicitar o nome
             String nome;
 
             do {
@@ -37,11 +36,9 @@ public class Main {
 
             } while (nome.trim().isEmpty());
 
-            // Solicitar a matrícula
             System.out.print("Digite a matrícula: ");
             String matricula = entrada.nextLine();
 
-            // Solicitar o tipo
             String tipo;
 
             do {
@@ -55,7 +52,6 @@ public class Main {
 
             } while (!tipo.equals("ALUNO") && !tipo.equals("PROFESSOR"));
 
-            // Solicitar o limite de empréstimos
             int limite = -1;
 
             while (limite < 0) {
@@ -77,7 +73,6 @@ public class Main {
                 }
             }
 
-            // Criar e armazenar o usuário
             Usuario usuario = new Usuario(
                     nome, matricula, tipo, limite);
 
@@ -92,12 +87,10 @@ public class Main {
             System.out.println("Empréstimos ativos: "
                     + usuario.getEmprestimosAtivos());
 
-            // Perguntar se deseja cadastrar outro
             System.out.print("\nDeseja cadastrar outro usuário? (S/N): ");
             continuar = entrada.nextLine();
         }
 
-        // Exibir os usuários cadastrados
         System.out.println("\n=== USUÁRIOS CADASTRADOS ===");
 
         for (int i = 0; i < quantidade; i++) {
