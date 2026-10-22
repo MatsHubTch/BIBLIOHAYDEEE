@@ -12,6 +12,7 @@ public class Livros {
         ArrayList<Integer> anosNascimento = new ArrayList<>();
         ArrayList<Long> isbns = new ArrayList<>();
         ArrayList<Boolean> disponiveis = new ArrayList<>();
+        ArrayList<Usuario> usuarios = new ArrayList<>(); // lista pra guarda os usuarios cadasttados (se eu não anotar nem eu vou saber.)
 
         String[] preNomes = {
                 "Meridiano de Sangue", "Não Tenho Boca e Preciso Gritar", "O Chamado de Cthulhu",
@@ -54,6 +55,10 @@ public class Livros {
                 System.out.println("2- Adicionar um Livro");
                 System.out.println("3- Pesquisar / Alugar um Livro");
                 System.out.println("4- Sair");
+
+                System.out.println("5- Cadastrar um Usuário");
+                System.out.println("6- Ver os Usuários cadastrados");
+
                 int escolha = scanner.nextInt();
                 scanner.nextLine();
 
@@ -151,6 +156,64 @@ public class Livros {
                 } else if (escolha == 4) {
                     System.out.println("Saindo...");
                     rodando = false;
+
+                    // ------------------------------------------------------------------------
+                    // CADASTRAR USUARIO
+                } else if (escolha == 5) {
+                    System.out.println("\n--- CADASTRO DE USUÁRIO ---");
+                    //(socorro josé)
+                    String nomeUsuario = "";
+                    while (nomeUsuario.trim().isEmpty()) {   // pede o nome e repete enquanto estiver vazio
+                        System.out.println("Qual o nome do usuário? ");
+                        nomeUsuario = scanner.nextLine();
+                        if (nomeUsuario.trim().isEmpty()) {
+                            System.out.println("O nome não pode ficar vazio! Digite de novo.");
+                        }
+                    }
+
+                    //matricula👍
+                    System.out.println("Qual a matrícula? ");
+                    String matriculaUsuario = scanner.nextLine();
+
+                    //nessa parte ele pede o tipo, se é professor ou alunno.
+                    String tipoUsuario = "";
+                    while (!tipoUsuario.equalsIgnoreCase("ALUNO") && !tipoUsuario.equalsIgnoreCase("PROFESSOR")) {
+                        System.out.println("Qual o tipo? Digite ALUNO ou PROFESSOR: ");
+                        tipoUsuario = scanner.nextLine().trim();
+                        if (!tipoUsuario.equalsIgnoreCase("ALUNO") && !tipoUsuario.equalsIgnoreCase("PROFESSOR")) {
+                            System.out.println("Tipo inválido! Só pode ser ALUNO ou PROFESSOR.");
+                        }
+                    }
+
+                    // aq é para selecionar o limite de livros
+                    System.out.println("Qual o limite de empréstimos? ");
+                    int limiteUsuario = scanner.nextInt();
+                    scanner.nextLine();
+
+                    //só se tiver tudo certo ele permite criar o usuário... teoricamente.
+                    try {
+                        Usuario novoUsuario = new Usuario(nomeUsuario, matriculaUsuario, tipoUsuario, limiteUsuario);
+                        usuarios.add(novoUsuario);
+                        System.out.println("\n(Usuário cadastrado com sucesso!)");
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Não foi possível cadastrar: " + e.getMessage());
+                    }
+
+                    // pra ver os usuários cadastrados.👍
+                } else if (escolha == 6) {
+                    System.out.println("\n--- USUÁRIOS CADASTRADOS ---");
+                    if (usuarios.size() == 0) {
+                        System.out.println("Ainda não tem nenhum usuário cadastrado.");
+                    }
+                    for (int i = 0; i < usuarios.size(); i++) {
+                        System.out.println("Usuário " + (i + 1) + ":");
+                        System.out.println("Nome: " + usuarios.get(i).getNome());
+                        System.out.println("Matrícula: " + usuarios.get(i).getMatricula());
+                        System.out.println("Tipo: " + usuarios.get(i).getTipo());
+                        System.out.println("Limite de empréstimos: " + usuarios.get(i).getLimiteEmprestimos());
+                        System.out.println("Empréstimos ativos: " + usuarios.get(i).getEmprestimosAtivos());
+                        System.out.println("----------------------------------------");
+                    }
 
                 } else {
                     System.out.println("Opção inválida.");
