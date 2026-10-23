@@ -2,7 +2,7 @@ public class Autor {
     private String nome;
     private String nacionalidade;
     private int anoDeNascimento;
-
+ private int emprestimosAtuais;
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -22,5 +22,13 @@ public class Autor {
     public int getAnoDeNascimento (){
         return this.anoDeNascimento;
     }
+    public void setEmprestimosAtuais (int emprestimosAtuais) {
+        this.emprestimosAtuais = emprestimosAtuais;
+    }
+
+    public int getEmprestimosAtuais() {
+        return this.emprestimosAtuais;
+    }
+
 
 }

@@ -3,8 +3,11 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Livros {
+
     public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
+
         ArrayList<String> nomesLivros = new ArrayList<>();
         ArrayList<String> generos = new ArrayList<>();
         ArrayList<String> nomesAutores = new ArrayList<>();
@@ -12,7 +15,7 @@ public class Livros {
         ArrayList<Integer> anosNascimento = new ArrayList<>();
         ArrayList<Long> isbns = new ArrayList<>();
         ArrayList<Boolean> disponiveis = new ArrayList<>();
-        ArrayList<Usuario> usuarios = new ArrayList<>(); 
+        ArrayList<Usuario> usuarios = new ArrayList<>(); // lista pra guarda os usuarios cadasttados (se eu não anotar nem eu vou saber.)
 
         String[] preNomes = {
                 "Meridiano de Sangue", "Não Tenho Boca e Preciso Gritar", "O Chamado de Cthulhu",
@@ -140,8 +143,15 @@ public class Livros {
                                 int alugar = scanner.nextInt();
                                 scanner.nextLine();
                                 if (alugar == 1) {
+                                    emprestimosAtuais = 0 + 1;
+                                    if (emprestimosAtuais == 3){
+                                        emprestimosAtuais = emprestimosAtuais - 1;
+                                        System.out.println( "Seu limite de livros alugados foi atingido." );
+                                    }
                                     disponiveis.set(i, false);
                                     System.out.println("Livro alugado com sucesso!");
+
+
                                 }
                             } else {
                                 System.out.println("Status: Indisponível (já está alugado).");
@@ -158,10 +168,13 @@ public class Livros {
                     System.out.println("Saindo...");
                     rodando = false;
 
+                    // ------------------------------------------------------------------------
+                    // CADASTRAR USUARIO
                 } else if (escolha == 5) {
                     System.out.println("\n--- CADASTRO DE USUÁRIO ---");
+                    //(socorro josé)
                     String nomeUsuario = "";
-                    while (nomeUsuario.trim().isEmpty()) {   
+                    while (nomeUsuario.trim().isEmpty()) {   // pede o nome e repete enquanto estiver vazio
                         System.out.println("Qual o nome do usuário? ");
                         nomeUsuario = scanner.nextLine();
                         if (nomeUsuario.trim().isEmpty()) {
@@ -169,9 +182,11 @@ public class Livros {
                         }
                     }
 
+                    //matricula👍
                     System.out.println("Qual a matrícula? ");
                     String matriculaUsuario = scanner.nextLine();
 
+                    //nessa parte ele pede o tipo, se é professor ou alunno.
                     String tipoUsuario = "";
                     while (!tipoUsuario.equalsIgnoreCase("ALUNO") && !tipoUsuario.equalsIgnoreCase("PROFESSOR")) {
                         System.out.println("Qual o tipo? Digite ALUNO ou PROFESSOR: ");
@@ -181,18 +196,21 @@ public class Livros {
                         }
                     }
 
-                    System.out.println("Qual o limite de empréstimos? ");
-                    int limiteUsuario = scanner.nextInt();
-                    scanner.nextLine();
+                    // aq é para selecionar o limite de livros
+                    System.out.println("O seu limite de emprestimos de livros é 3.");
 
+
+
+                    //só se tiver tudo certo ele permite criar o usuário... teoricamente.
                     try {
-                        Usuario novoUsuario = new Usuario(nomeUsuario, matriculaUsuario, tipoUsuario, limiteUsuario);
+                        Usuario novoUsuario = new Usuario(nomeUsuario, matriculaUsuario, tipoUsuario, emprestimosAtuais);
                         usuarios.add(novoUsuario);
                         System.out.println("\n(Usuário cadastrado com sucesso!)");
                     } catch (IllegalArgumentException e) {
                         System.out.println("Não foi possível cadastrar: " + e.getMessage());
                     }
 
+                    // pra ver os usuários cadastrados.👍
                 } else if (escolha == 6) {
                     System.out.println("\n--- USUÁRIOS CADASTRADOS ---");
                     if (usuarios.size() == 0) {
