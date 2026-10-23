@@ -12,7 +12,7 @@ public class Livros {
         ArrayList<Integer> anosNascimento = new ArrayList<>();
         ArrayList<Long> isbns = new ArrayList<>();
         ArrayList<Boolean> disponiveis = new ArrayList<>();
-        ArrayList<Usuario> usuarios = new ArrayList<>(); // lista pra guarda os usuarios cadasttados (se eu não anotar nem eu vou saber.)
+        ArrayList<Usuario> usuarios = new ArrayList<>(); 
 
         String[] preNomes = {
                 "Meridiano de Sangue", "Não Tenho Boca e Preciso Gritar", "O Chamado de Cthulhu",
@@ -158,13 +158,10 @@ public class Livros {
                     System.out.println("Saindo...");
                     rodando = false;
 
-                    // ------------------------------------------------------------------------
-                    // CADASTRAR USUARIO
                 } else if (escolha == 5) {
                     System.out.println("\n--- CADASTRO DE USUÁRIO ---");
-                    //(socorro josé)
                     String nomeUsuario = "";
-                    while (nomeUsuario.trim().isEmpty()) {   // pede o nome e repete enquanto estiver vazio
+                    while (nomeUsuario.trim().isEmpty()) {   
                         System.out.println("Qual o nome do usuário? ");
                         nomeUsuario = scanner.nextLine();
                         if (nomeUsuario.trim().isEmpty()) {
@@ -172,11 +169,9 @@ public class Livros {
                         }
                     }
 
-                    //matricula👍
                     System.out.println("Qual a matrícula? ");
                     String matriculaUsuario = scanner.nextLine();
 
-                    //nessa parte ele pede o tipo, se é professor ou alunno.
                     String tipoUsuario = "";
                     while (!tipoUsuario.equalsIgnoreCase("ALUNO") && !tipoUsuario.equalsIgnoreCase("PROFESSOR")) {
                         System.out.println("Qual o tipo? Digite ALUNO ou PROFESSOR: ");
@@ -186,12 +181,10 @@ public class Livros {
                         }
                     }
 
-                    // aq é para selecionar o limite de livros
                     System.out.println("Qual o limite de empréstimos? ");
                     int limiteUsuario = scanner.nextInt();
                     scanner.nextLine();
 
-                    //só se tiver tudo certo ele permite criar o usuário... teoricamente.
                     try {
                         Usuario novoUsuario = new Usuario(nomeUsuario, matriculaUsuario, tipoUsuario, limiteUsuario);
                         usuarios.add(novoUsuario);
@@ -200,7 +193,6 @@ public class Livros {
                         System.out.println("Não foi possível cadastrar: " + e.getMessage());
                     }
 
-                    // pra ver os usuários cadastrados.👍
                 } else if (escolha == 6) {
                     System.out.println("\n--- USUÁRIOS CADASTRADOS ---");
                     if (usuarios.size() == 0) {
