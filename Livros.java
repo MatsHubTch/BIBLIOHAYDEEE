@@ -58,6 +58,7 @@ public class Livros {
 
                 System.out.println("5- Cadastrar um Usuário");
                 System.out.println("6- Ver os Usuários cadastrados");
+                System.out.println("7- Logar no Usuário");
 
                 int escolha = scanner.nextInt();
                 scanner.nextLine();
