@@ -15,7 +15,8 @@ public class Livros {
         ArrayList<Integer> anosNascimento = new ArrayList<>();
         ArrayList<Long> isbns = new ArrayList<>();
         ArrayList<Boolean> disponiveis = new ArrayList<>();
-        ArrayList<Usuario> usuarios = new ArrayList<>(); // lista pra guarda os usuarios cadasttados (se eu não anotar nem eu vou saber.)
+        ArrayList<Usuario> usuarios = new ArrayList<>();
+        Usuario usuarioLogado = null;
 
         String[] preNomes = {
                 "Meridiano de Sangue", "Não Tenho Boca e Preciso Gritar", "O Chamado de Cthulhu",
@@ -58,10 +59,16 @@ public class Livros {
                 System.out.println("2- Adicionar um Livro");
                 System.out.println("3- Pesquisar / Alugar um Livro");
                 System.out.println("4- Sair");
-
                 System.out.println("5- Cadastrar um Usuário");
                 System.out.println("6- Ver os Usuários cadastrados");
                 System.out.println("7- Logar no Usuário");
+                System.out.println("8- Devolver um Livro");
+
+                if (usuarioLogado != null) {
+                    System.out.println("(Logado como: " + usuarioLogado.getNome()
+                            + " — " + usuarioLogado.getEmprestimosAtivos() + "/"
+                            + usuarioLogado.getLimiteEmprestimos() + " livros)");
+                }
 
                 int escolha = scanner.nextInt();
                 scanner.nextLine();
@@ -136,22 +143,26 @@ public class Livros {
                             System.out.println("Ano de nascimento do Autor: " + anosNascimento.get(i));
                             System.out.println("ISBN: " + isbns.get(i));
 
-
                             if (disponiveis.get(i)) {
                                 System.out.println("Status: Disponível na biblioteca!");
                                 System.out.println("Deseja alugar este livro? Digite 1 para sim ou 2 para não: ");
                                 int alugar = scanner.nextInt();
                                 scanner.nextLine();
                                 if (alugar == 1) {
-                                    emprestimosAtuais = 0 + 1;
-                                    if (emprestimosAtuais == 3){
-                                        emprestimosAtuais = emprestimosAtuais - 1;
-                                        System.out.println( "Seu limite de livros alugados foi atingido." );
+                                    if (usuarioLogado == null) {
+                                        System.out.println("Faça login antes de alugar (opção 7).");
+                                    } else if (!usuarioLogado.podeEmprestar()) {
+                                        System.out.println("Você já tem "
+                                                + usuarioLogado.getEmprestimosAtivos()
+                                                + " livros. Limite de "
+                                                + usuarioLogado.getLimiteEmprestimos() + " atingido!");
+                                    } else {
+                                        usuarioLogado.registrarEmprestimo();
+                                        disponiveis.set(i, false);
+                                        System.out.println("Livro alugado! Você está com "
+                                                + usuarioLogado.getEmprestimosAtivos() + "/"
+                                                + usuarioLogado.getLimiteEmprestimos() + " livros.");
                                     }
-                                    disponiveis.set(i, false);
-                                    System.out.println("Livro alugado com sucesso!");
-
-
                                 }
                             } else {
                                 System.out.println("Status: Indisponível (já está alugado).");
@@ -168,13 +179,10 @@ public class Livros {
                     System.out.println("Saindo...");
                     rodando = false;
 
-                    // ------------------------------------------------------------------------
-                    // CADASTRAR USUARIO
                 } else if (escolha == 5) {
                     System.out.println("\n--- CADASTRO DE USUÁRIO ---");
-                    //(socorro josé)
                     String nomeUsuario = "";
-                    while (nomeUsuario.trim().isEmpty()) {   // pede o nome e repete enquanto estiver vazio
+                    while (nomeUsuario.trim().isEmpty()) {
                         System.out.println("Qual o nome do usuário? ");
                         nomeUsuario = scanner.nextLine();
                         if (nomeUsuario.trim().isEmpty()) {
@@ -182,11 +190,9 @@ public class Livros {
                         }
                     }
 
-                    //matricula👍
                     System.out.println("Qual a matrícula? ");
                     String matriculaUsuario = scanner.nextLine();
 
-                    //nessa parte ele pede o tipo, se é professor ou alunno.
                     String tipoUsuario = "";
                     while (!tipoUsuario.equalsIgnoreCase("ALUNO") && !tipoUsuario.equalsIgnoreCase("PROFESSOR")) {
                         System.out.println("Qual o tipo? Digite ALUNO ou PROFESSOR: ");
@@ -196,21 +202,16 @@ public class Livros {
                         }
                     }
 
-                    // aq é para selecionar o limite de livros
                     System.out.println("O seu limite de emprestimos de livros é 3.");
 
-
-
-                    //só se tiver tudo certo ele permite criar o usuário... teoricamente.
                     try {
-                        Usuario novoUsuario = new Usuario(nomeUsuario, matriculaUsuario, tipoUsuario, emprestimosAtuais);
+                        Usuario novoUsuario = new Usuario(nomeUsuario, matriculaUsuario, tipoUsuario, 3);
                         usuarios.add(novoUsuario);
                         System.out.println("\n(Usuário cadastrado com sucesso!)");
                     } catch (IllegalArgumentException e) {
                         System.out.println("Não foi possível cadastrar: " + e.getMessage());
                     }
 
-                    // pra ver os usuários cadastrados.👍
                 } else if (escolha == 6) {
                     System.out.println("\n--- USUÁRIOS CADASTRADOS ---");
                     if (usuarios.size() == 0) {
@@ -224,6 +225,53 @@ public class Livros {
                         System.out.println("Limite de empréstimos: " + usuarios.get(i).getLimiteEmprestimos());
                         System.out.println("Empréstimos ativos: " + usuarios.get(i).getEmprestimosAtivos());
                         System.out.println("----------------------------------------");
+                    }
+
+                } else if (escolha == 7) {
+                    System.out.println("\n--- LOGIN ---");
+                    System.out.println("Digite a matrícula:");
+                    String mat = scanner.nextLine();
+
+                    usuarioLogado = null;
+                    for (Usuario u : usuarios) {
+                        if (u.getMatricula().equals(mat)) {
+                            usuarioLogado = u;
+                            break;
+                        }
+                    }
+
+                    if (usuarioLogado == null) {
+                        System.out.println("Matrícula não encontrada.");
+                    } else {
+                        System.out.println("Logado como: " + usuarioLogado.getNome()
+                                + " — empréstimos: " + usuarioLogado.getEmprestimosAtivos()
+                                + "/" + usuarioLogado.getLimiteEmprestimos());
+                    }
+
+                } else if (escolha == 8) {
+                    System.out.println("\n--- DEVOLUÇÃO ---");
+                    if (usuarioLogado == null) {
+                        System.out.println("Faça login primeiro (opção 7).");
+                    } else {
+                        System.out.println("Nome do livro a devolver:");
+                        String nomeDev = scanner.nextLine();
+                        boolean devolveu = false;
+
+                        for (int i = 0; i < nomesLivros.size(); i++) {
+                            if (nomesLivros.get(i).equalsIgnoreCase(nomeDev)
+                                    && !disponiveis.get(i)) {
+                                disponiveis.set(i, true);
+                                usuarioLogado.registrarDevolucao();
+                                devolveu = true;
+                                System.out.println("Devolvido! Agora você está com "
+                                        + usuarioLogado.getEmprestimosAtivos() + "/"
+                                        + usuarioLogado.getLimiteEmprestimos() + " livros.");
+                                break;
+                            }
+                        }
+                        if (!devolveu) {
+                            System.out.println("Livro não encontrado ou já disponível.");
+                        }
                     }
 
                 } else {

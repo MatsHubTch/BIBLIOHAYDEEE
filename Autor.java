@@ -2,7 +2,7 @@ public class Autor {
     private String nome;
     private String nacionalidade;
     private int anoDeNascimento;
- private int emprestimosAtuais;
+
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -10,25 +10,20 @@ public class Autor {
     public String getNome() {
         return this.nome;
     }
-    public void setNacionalidade  (String nacionalidade){
-        this.nacionalidade =  nacionalidade;
+
+    public void setNacionalidade(String nacionalidade) {
+        this.nacionalidade = nacionalidade;
     }
-    public void setAnoDeNascimento  (int anoDeNascimento){
-        this.anoDeNascimento =  anoDeNascimento;
+
+    public void setAnoDeNascimento(int anoDeNascimento) {
+        this.anoDeNascimento = anoDeNascimento;
     }
-    public String getNacionalidade(){
+
+    public String getNacionalidade() {
         return this.nacionalidade;
     }
-    public int getAnoDeNascimento (){
+
+    public int getAnoDeNascimento() {
         return this.anoDeNascimento;
     }
-    public void setEmprestimosAtuais (int emprestimosAtuais) {
-        this.emprestimosAtuais = emprestimosAtuais;
-    }
-
-    public int getEmprestimosAtuais() {
-        return this.emprestimosAtuais;
-    }
-
-
 }
