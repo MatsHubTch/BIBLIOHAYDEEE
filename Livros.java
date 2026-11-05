@@ -57,7 +57,7 @@ public class Livros {
                 System.out.println("\nO que quer fazer? Digite o número correspondente.");
                 System.out.println("1- Ver nossa Biblioteca de Livros");
                 System.out.println("2- Adicionar um Livro");
-                System.out.println("3- Pesquisar / Alugar um Livro");
+                System.out.println("3- Pesquisar (por livro ou autor) / Alugar um Livro");
                 System.out.println("4- Sair");
                 System.out.println("5- Cadastrar um Usuário");
                 System.out.println("6- Ver os Usuários cadastrados");
@@ -128,12 +128,15 @@ public class Livros {
                     }
 
                 } else if (escolha == 3) {
-                    System.out.println("Digite o nome (ou parte do nome) do livro que deseja pesquisar: ");
+                    System.out.println("Digite o nome do livro OU do autor que deseja pesquisar: ");
                     String pesquisa = scanner.nextLine();
                     boolean encontrado = false;
 
                     for (int i = 0; i < nomesLivros.size(); i++) {
-                        if (nomesLivros.get(i).toLowerCase().contains(pesquisa.toLowerCase())) {
+
+                        if (nomesLivros.get(i).toLowerCase().contains(pesquisa.toLowerCase())
+                                || nomesAutores.get(i).toLowerCase().contains(pesquisa.toLowerCase())) {
+
                             encontrado = true;
                             System.out.println("\nLivro encontrado!");
                             System.out.println("Nome do Livro: " + nomesLivros.get(i));
@@ -172,7 +175,7 @@ public class Livros {
                     }
 
                     if (!encontrado) {
-                        System.out.println("Nenhum livro encontrado com o nome: " + pesquisa);
+                        System.out.println("Nenhum livro ou autor encontrado com o nome: " + pesquisa);
                     }
 
                 } else if (escolha == 4) {
